@@ -35,6 +35,20 @@ class ControllerProvider implements ServiceProviderInterface {
             return $app['twig']->render('servers.html.twig');
         });
 
+        $app->delete('/remove', function(Request $request) use ($app){
+            if (!$request->isXmlHttpRequest()) {
+                $app->abort(404, "Page not found");
+            }
+
+            $functionName = $request->query->getAlnum('function');
+            $numberOfRemovedJobs = $app['gearman.task.remover']->removeByFunctionName($functionName);
+
+
+            return new JsonResponse(array(
+                'jobsRemoved' => $numberOfRemovedJobs,
+            ));
+        });
+
         $app->get('/info', function(Request $request) use ($app) {
 
             if (!$request->isXmlHttpRequest()) {

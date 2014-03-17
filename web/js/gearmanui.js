@@ -18,6 +18,10 @@ var gearmanui = angular.module('gearmanui', ['ngResource'])
         return $resource('info', {});
     })
 
+    .factory('GearmanJobRemover', function($resource){
+        return $resource('remove');
+    })
+
     // Service : Handle server errors
     .factory('GearmanErrorHandler', function() {
 
@@ -130,7 +134,13 @@ var gearmanui = angular.module('gearmanui', ['ngResource'])
  * Controllers
  *
  */
-function InfoCtrl($scope, GearmanSettings, GearmanInfo, GearmanInfoHandler, GearmanErrorHandler) {
+function InfoCtrl($scope, GearmanSettings, GearmanInfo, GearmanInfoHandler, GearmanErrorHandler, GearmanJobRemover) {
+
+    $scope.removeJobs = function(item) {
+        GearmanJobRemover.delete({
+            'function': item.function
+        });
+    };
 
     /*
      * TODO Handle communication errors.
