@@ -19,6 +19,8 @@ class Remover implements IRemover
     }
 
     /**
+     * Removes all tasks defined by name of a functions
+     * Returns number of removed tasks
      * @param string $function
      * @return int
      */
